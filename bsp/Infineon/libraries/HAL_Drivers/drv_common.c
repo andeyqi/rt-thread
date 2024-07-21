@@ -89,6 +89,8 @@ void rt_hw_us_delay(rt_uint32_t us)
  */
 rt_weak void rt_hw_board_init()
 {
+    SystemIrqInit();
+
     cy_bsp_all_init();
 
     /* systick init */
