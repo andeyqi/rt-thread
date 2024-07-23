@@ -36,6 +36,9 @@ menu "On-chip Peripheral Drivers"
                 int "UART connect CPU Interrupt Number (0-7)"
                 range 0 7
                 default 3
+            config BSP_USING_UART2
+                bool "Enable UART2"
+                default n
         endif
 
 endmenu
