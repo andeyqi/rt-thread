@@ -212,10 +212,10 @@ void slcd_task(void * para)
     memset(&slcdEngine, 0, sizeof(tSLCD_Engine));
 
     SLCD_Engine_Init(&slcdEngine, SLCD_SetLCDPin);
-
     /* Starts SLCD display. */
     SLCD_StartDisplay(LCD);
 
+#if 0
     SLCD_Show_Digital();
 
     SLCD_Show_Icon();
@@ -227,9 +227,43 @@ void slcd_task(void * para)
     SLCD_StopDisplay(LCD);
 
     rt_kprintf("\r\nSLCD Example Ends.\r\n");
+#endif
+
+    int hour = -1;
+    int min = -1;
+    int sec = -1;
+
+    int hour1 = -1;
+    int min1 = -1;
+    int sec1 = -1;
 
     while (1)
     {
-      rt_thread_mdelay(500);
+        time_t timep;
+        struct tm *p;
+        time (&timep);
+        p=gmtime(&timep);
+        sec1 = p->tm_sec;
+        min1 = p->tm_min;
+        hour1 = 8+p->tm_hour;
+
+        if(sec != sec1)
+        {
+            sec = sec1;
+            SLCD_Engine_Show_Num(&slcdEngine, sec%10, 3, 1);
+            SLCD_Engine_Show_Num(&slcdEngine, sec/10, 2, 1);
+        }
+
+        if(min != min1)
+        {
+            min = min1;
+            SLCD_Engine_Show_Num(&slcdEngine, min%10, 1, 1);
+            SLCD_Engine_Show_Num(&slcdEngine, min/10, 0, 1);
+        }
+
+        SLCD_Engine_Show_Icon(&slcdEngine, ICON_COL, 1);
+        rt_thread_mdelay(500);
+        SLCD_Engine_Show_Icon(&slcdEngine, ICON_COL, 0);
+        rt_thread_mdelay(500);
     }
 }
