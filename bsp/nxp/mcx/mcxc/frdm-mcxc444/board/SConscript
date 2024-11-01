@@ -9,9 +9,14 @@ MCUX_Config/board/clock_config.c
 MCUX_Config/board/pin_mux.c
 """)
 
-
 CPPPATH = [cwd, cwd + '/MCUX_Config/board']
 CPPDEFINES = ['DEBUG', 'CPU_MCXC444VLH']
+
+if  GetDepend('BSP_USING_SLCD'):
+    src += ['slcd_engine/slcd_engine.c']
+    src += ['slcd_engine/LCD-S401M16KR/LCD-S401M16KR.c']
+    CPPPATH += [cwd, cwd + '/slcd_engine/',cwd + '/slcd_engine/LCD-S401M16KR/']
+    CPPDEFINES += ['SLCD_PANEL_LCD_S401M16KR_H']
 
 group = DefineGroup('Drivers', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES)
 

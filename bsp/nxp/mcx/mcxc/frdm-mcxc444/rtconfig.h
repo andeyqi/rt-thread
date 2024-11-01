@@ -331,6 +331,7 @@
 
 /* On-chip Peripheral Drivers */
 
+#define BSP_USING_SLCD
 #define BSP_USING_PIN
 #define BSP_USING_UART
 #define BSP_USING_UART0
