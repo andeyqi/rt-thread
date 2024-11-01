@@ -41,6 +41,15 @@ int main(void)
 
     rt_kprintf("NXP MCXC444\r\n");
 
+#if defined BSP_USING_SLCD    
+    extern void slcd_task(void * para);
+    rt_thread_t tid;
+    tid = rt_thread_create("slcd", slcd_task, RT_NULL,
+                           RT_MAIN_THREAD_STACK_SIZE, RT_MAIN_THREAD_PRIORITY, 20);
+    RT_ASSERT(tid != RT_NULL);
+    rt_thread_startup(tid);
+#endif    
+
     while (1)
     {
         rt_pin_write(LED_PIN, PIN_HIGH);    /* Set GPIO output 1 */

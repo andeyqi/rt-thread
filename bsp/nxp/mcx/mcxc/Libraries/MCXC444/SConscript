@@ -41,6 +41,7 @@ src += ['MCXC444/drivers/fsl_spi.c']
 src += ['MCXC444/drivers/fsl_tpm.c']
 src += ['MCXC444/drivers/fsl_uart.c']
 src += ['MCXC444/drivers/fsl_uart_dma.c']
+src += ['MCXC444/drivers/fsl_slcd.c']
 
 
 group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path)
