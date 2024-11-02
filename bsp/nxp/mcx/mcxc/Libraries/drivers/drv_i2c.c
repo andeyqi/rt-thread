@@ -42,7 +42,7 @@ static const mcx_i2c_instance_t mcx_i2c_instances[] =
 
 static mcx_i2c_obj_t mcx_i2c_list[ARRAY_SIZE(mcx_i2c_instances)];
 
-static int mcx_i2c_master_xfer(struct rt_i2c_bus_device *bus, struct rt_i2c_msg msgs[], rt_uint32_t num)
+static ssize_t mcx_i2c_master_xfer(struct rt_i2c_bus_device *bus, struct rt_i2c_msg msgs[], rt_uint32_t num)
 {
     struct rt_i2c_msg *msg;
     i2c_master_transfer_t xfer = {0};

@@ -125,6 +125,7 @@
 
 /* end of Interprocess Communication (IPC) */
 /* end of POSIX (Portable Operating System Interface) layer */
+#define RT_USING_CPLUSPLUS
 /* end of C/C++ and POSIX layer */
 
 /* Network */
@@ -254,6 +255,8 @@
 /* touch drivers */
 
 /* end of touch drivers */
+#define PKG_USING_I2C_TOOLS
+#define PKG_USING_I2C_TOOLS_LATEST_VERSION
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
@@ -336,6 +339,8 @@
 #define BSP_USING_UART
 #define BSP_USING_UART0
 #define BSP_USING_UART1
+#define BSP_USING_I2C
+#define BSP_USING_I2C0
 #define BSP_USING_RTC
 /* end of On-chip Peripheral Drivers */
 /* end of Hardware Drivers Config */
