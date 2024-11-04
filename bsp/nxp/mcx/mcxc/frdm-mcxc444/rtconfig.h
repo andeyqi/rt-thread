@@ -345,4 +345,9 @@
 /* end of On-chip Peripheral Drivers */
 /* end of Hardware Drivers Config */
 
+/* App Config */
+
+#define BSP_USING_ASMTEST
+/* end of App Config */
+
 #endif

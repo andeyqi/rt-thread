@@ -1,0 +1,7 @@
+menu "App Config"
+
+    config BSP_USING_ASMTEST
+        bool "Enable Asm Test"
+        default n
+
+endmenu
