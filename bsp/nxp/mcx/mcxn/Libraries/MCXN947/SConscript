@@ -107,6 +107,10 @@ src += ['MCXN947/drivers/romapi/flash/src/fsl_flash.c']
 src += ['MCXN947/drivers/romapi/mem_interface/src/fsl_mem_interface.c']
 src += ['MCXN947/drivers/romapi/nboot/src/fsl_nboot.c']
 src += ['MCXN947/drivers/romapi/runbootloader/src/fsl_runbootloader.c']
+if GetDepend(['BSP_KICK_CORE1']):
+    src += ['MCXN947/middleware/multicore/mcmgr/mcmgr.c']
+    src += ['MCXN947/middleware/multicore/mcmgr/mcmgr_internal_core_api_mcxnx4x.c']
+    path += ['MCXN947/middleware/multicore/mcmgr/mcmgr.c']
 
 path += [cwd + '/MCXN947/drivers/romapi/flash']
 path += [cwd + '/MCXN947/drivers/romapi/mem_interface']

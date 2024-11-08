@@ -19,6 +19,11 @@ menu "On-chip Peripheral Drivers"
         select RT_USING_PIN
         default y
 
+    config BSP_KICK_CORE1
+        bool "Enable CORE1"
+        default y
+
+
     menuconfig BSP_USING_UART
         bool "Enable UART"
         default y
