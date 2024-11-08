@@ -51,10 +51,10 @@ int main(void)
     (void)MCMGR_Init();
 
     /* Get the startup data */
-    do
-    {
-        status = MCMGR_GetStartupData(&startupData);
-    } while (status != kStatus_MCMGR_Success);
+    //do
+    //{
+    //    status = MCMGR_GetStartupData(&startupData);
+    //} while (status != kStatus_MCMGR_Success);
 
     /* Make a noticable delay after the reset */
     /* Use startup parameter from the master core... */
