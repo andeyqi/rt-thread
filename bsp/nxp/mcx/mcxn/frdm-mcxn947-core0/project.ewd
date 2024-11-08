@@ -184,15 +184,15 @@
                 </option>
                 <option>
                     <name>OCMulticoreWorkspace</name>
-                    <state></state>
+                    <state>$PROJ_DIR$\..\frdm-mcxn947-core1-bare\core1-bare.eww</state>
                 </option>
                 <option>
                     <name>OCMulticoreSlaveProject</name>
-                    <state></state>
+                    <state>core1-bare</state>
                 </option>
                 <option>
                     <name>OCMulticoreSlaveConfiguration</name>
-                    <state></state>
+                    <state>debug</state>
                 </option>
                 <option>
                     <name>OCDownloadExtraImage</name>
@@ -200,7 +200,7 @@
                 </option>
                 <option>
                     <name>OCAttachSlave</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>MassEraseBeforeFlashing</name>
@@ -212,7 +212,7 @@
                 </option>
                 <option>
                     <name>OCMulticoreAMPConfigType</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OCMulticoreSessionFile</name>
