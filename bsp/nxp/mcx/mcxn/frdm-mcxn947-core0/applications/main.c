@@ -16,6 +16,7 @@
 #include <rtthread.h>
 #include "drv_pin.h"
 #include "board.h"
+#include "fsl_mailbox.h"
 
 
 #define LEDB_PIN        ((1*32)+2)
@@ -30,6 +31,13 @@
 
 static void sw_pin_cb(void *args);
 
+
+void MAILBOX_IRQHandler()
+{
+    rt_kprintf("recive from core1 ack mailbox value %d.\n",MAILBOX_GetValue(MAILBOX,kMAILBOX_CM33_Core0));
+    MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core0,0xffffffff);
+}
+
 int main(void)
 {
 #if defined(__CC_ARM)
@@ -42,7 +50,7 @@ int main(void)
     rt_kprintf("using gcc, version: %d.%d\n", __GNUC__, __GNUC_MINOR__);
 #endif
 
-    rt_pin_mode(LEDB_PIN, PIN_MODE_OUTPUT);  /* Set GPIO as Output */
+    //rt_pin_mode(LEDB_PIN, PIN_MODE_OUTPUT);  /* Set GPIO as Output */
 
     rt_pin_mode(BUTTON_PIN, PIN_MODE_INPUT_PULLUP);
     rt_pin_attach_irq(BUTTON_PIN, PIN_IRQ_MODE_FALLING, sw_pin_cb, RT_NULL);
@@ -50,8 +58,8 @@ int main(void)
 
     rt_kprintf("MCXN947 HelloWorld\r\n");
     
-    
-
+    MAILBOX_Init(MAILBOX);
+    NVIC_EnableIRQ(MAILBOX_IRQn);
 
 #ifdef RT_USING_SDIO
     rt_thread_mdelay(2000);
@@ -67,10 +75,12 @@ int main(void)
 
     while (1)
     {
-        rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
+        //rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
         rt_thread_mdelay(500);               /* Delay 500mS */
-        rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
-        rt_thread_mdelay(500);               /* Delay 500mS */
+        //rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
+        //rt_thread_mdelay(500);               /* Delay 500mS */
+        rt_kprintf("send to core1 req.\n");
+        MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,1);
     }
 }
 

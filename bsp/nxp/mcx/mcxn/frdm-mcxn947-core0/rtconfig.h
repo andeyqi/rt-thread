@@ -351,7 +351,6 @@
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_PIN
-#define BSP_KICK_CORE1
 #define BSP_USING_UART
 #define BSP_USING_UART4
 #define BSP_USING_UART5

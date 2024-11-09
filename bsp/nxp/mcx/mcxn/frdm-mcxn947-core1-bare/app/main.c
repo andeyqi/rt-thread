@@ -11,6 +11,8 @@
 
 #include "fsl_common.h"
 #include "fsl_gpio.h"
+#include "fsl_mailbox.h"
+
 
 /*******************************************************************************
  * Definitions
@@ -30,7 +32,14 @@ void SystemInitHook(void)
        function as close to the reset entry as possible to allow CoreUp event
        triggering. The SystemInitHook() weak function overloading is used in this
        application. */
-    (void)MCMGR_EarlyInit();
+    //(void)MCMGR_EarlyInit();
+}
+
+void MAILBOX_IRQHandler()
+{
+    LED_TOGGLE();
+    MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core1,0xffffffff);
+    MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core0,100);
 }
 
 
@@ -46,9 +55,12 @@ int main(void)
     /* enable clock for GPIO */
     CLOCK_EnableClock(kCLOCK_Gpio0);
     BOARD_InitBootPins();
+    
+    MAILBOX_Init(MAILBOX);
+    NVIC_EnableIRQ(MAILBOX_IRQn);
 
     /* Initialize MCMGR, install generic event handlers */
-    (void)MCMGR_Init();
+    //(void)MCMGR_Init();
 
     /* Get the startup data */
     //do
@@ -58,18 +70,18 @@ int main(void)
 
     /* Make a noticable delay after the reset */
     /* Use startup parameter from the master core... */
-    for (i = 0; i < startupData; i++)
-    {
-        SDK_DelayAtLeastUs(1000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    }
+    //for (i = 0; i < startupData; i++)
+    //{
+    //    SDK_DelayAtLeastUs(1000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    //}
 
     /* Configure LED */
     LED_INIT();
 
     for (;;)
     {
-        SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        LED_TOGGLE();
+        //SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        //LED_TOGGLE();
     }
 
 }

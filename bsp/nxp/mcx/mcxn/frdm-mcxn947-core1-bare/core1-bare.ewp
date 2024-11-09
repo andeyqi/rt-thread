@@ -2288,15 +2288,27 @@
         <name>mcmgr</name>
         <file>
             <name>$PROJ_DIR$\..\Libraries\MCXN947\middleware\multicore\mcmgr\mcmgr.c</name>
+            <excluded>
+                <configuration>Debug</configuration>
+            </excluded>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\MCXN947\middleware\multicore\mcmgr\mcmgr.h</name>
+            <excluded>
+                <configuration>Debug</configuration>
+            </excluded>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\MCXN947\middleware\multicore\mcmgr\mcmgr_internal_core_api.h</name>
+            <excluded>
+                <configuration>Debug</configuration>
+            </excluded>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\MCXN947\middleware\multicore\mcmgr\mcmgr_internal_core_api_mcxnx4x.c</name>
+            <excluded>
+                <configuration>Debug</configuration>
+            </excluded>
         </file>
     </group>
     <group>
