@@ -48,8 +48,8 @@ void MAILBOX_IRQHandler()
  */
 int main(void)
 {
-    uint32_t startupData, i;
-    mcmgr_status_t status;
+    //uint32_t startupData, i;
+    //mcmgr_status_t status;
 
     /* Init board hardware.*/
     /* enable clock for GPIO */
