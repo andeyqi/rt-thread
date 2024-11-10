@@ -35,11 +35,34 @@ void SystemInitHook(void)
     //(void)MCMGR_EarlyInit();
 }
 
+uint8_t flag = 0;
+
 void MAILBOX_IRQHandler()
 {
     LED_TOGGLE();
     MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core1,0xffffffff);
     MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core0,100);
+    flag = 1;
+}
+
+static int32_t counter @ 0x2004C000 = 0;
+
+unsigned int mutex_test(void)
+{
+    int i =0x7ffffff;
+    
+    for(;i != 0;i--)
+    {
+      while(MAILBOX_GetMutex(MAILBOX) == 0)
+        ;
+      
+      counter--;
+      
+      MAILBOX_SetMutex(MAILBOX);
+      
+    }
+
+    return 1;
 }
 
 
@@ -77,11 +100,17 @@ int main(void)
 
     /* Configure LED */
     LED_INIT();
+    
 
     for (;;)
     {
         //SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         //LED_TOGGLE();
+        if(flag)
+        {
+            mutex_test();
+            flag = 0;
+        }
     }
 
 }

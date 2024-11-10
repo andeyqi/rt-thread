@@ -38,6 +38,32 @@ void MAILBOX_IRQHandler()
     MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core0,0xffffffff);
 }
 
+static int32_t counter @ 0x2004C000 = 0;
+
+
+unsigned int mutex_test(void)
+{
+    int i =0x7ffffff;
+    
+    for(;i != 0;i--)
+    {
+      while(MAILBOX_GetMutex(MAILBOX) == 0)
+        ;
+      
+      counter++;
+      
+      MAILBOX_SetMutex(MAILBOX);
+      
+    }
+    rt_thread_mdelay(50000); 
+    
+    
+    rt_kprintf("addr %p counter = %d.\r\n",&counter,counter);
+    return 1;
+}
+
+
+
 int main(void)
 {
 #if defined(__CC_ARM)
@@ -60,6 +86,10 @@ int main(void)
     
     MAILBOX_Init(MAILBOX);
     NVIC_EnableIRQ(MAILBOX_IRQn);
+    
+    rt_kprintf("send to core1 start test.\n");
+    MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,1); 
+    mutex_test();
 
 #ifdef RT_USING_SDIO
     rt_thread_mdelay(2000);
@@ -79,8 +109,6 @@ int main(void)
         rt_thread_mdelay(500);               /* Delay 500mS */
         //rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
         //rt_thread_mdelay(500);               /* Delay 500mS */
-        rt_kprintf("send to core1 req.\n");
-        MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,1);
     }
 }
 
