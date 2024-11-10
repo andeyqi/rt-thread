@@ -184,7 +184,7 @@
                 </option>
                 <option>
                     <name>OCMulticoreWorkspace</name>
-                    <state>$PROJ_DIR$\..\frdm-mcxn947-core1-bare\core1-bare.eww</state>
+                    <state>$PROJ_DIR$\..\frdm-mcxn947-core1\core1-bare.eww</state>
                 </option>
                 <option>
                     <name>OCMulticoreSlaveProject</name>
