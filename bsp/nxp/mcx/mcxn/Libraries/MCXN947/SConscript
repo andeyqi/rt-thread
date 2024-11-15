@@ -107,6 +107,7 @@ src += ['MCXN947/drivers/romapi/flash/src/fsl_flash.c']
 src += ['MCXN947/drivers/romapi/mem_interface/src/fsl_mem_interface.c']
 src += ['MCXN947/drivers/romapi/nboot/src/fsl_nboot.c']
 src += ['MCXN947/drivers/romapi/runbootloader/src/fsl_runbootloader.c']
+src += ['components/common/ringbuffer.c']
 if GetDepend(['BSP_USING_MCMGR']):
     src += ['middleware/multicore/mcmgr/mcmgr.c']
     src += ['middleware/multicore/mcmgr/mcmgr_internal_core_api_mcxnx4x.c']
@@ -116,6 +117,7 @@ path += [cwd + '/MCXN947/drivers/romapi/flash']
 path += [cwd + '/MCXN947/drivers/romapi/mem_interface']
 path += [cwd + '/MCXN947/drivers/romapi/nboot']
 path += [cwd + '/MCXN947/drivers/romapi/runbootloader']
+path += [cwd + '/components/common']
 
 group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path)
 
