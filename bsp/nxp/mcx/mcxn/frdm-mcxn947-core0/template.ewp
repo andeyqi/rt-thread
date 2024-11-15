@@ -2199,4 +2199,10 @@
             <data />
         </settings>
     </configuration>
+    <group>
+        <name>Linkfile</name>
+        <file>
+            <name>$PROJ_DIR$\board\linker_scripts\MCXN947_cm33_core0_flash.icf</name>
+        </file>
+    </group>
 </project>
