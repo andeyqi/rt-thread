@@ -2236,6 +2236,24 @@
     <group>
         <name>component</name>
         <group>
+            <name>common</name>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\mini_printf.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\ringbuffer.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\ringbuffer.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\utilities.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\utilities.h</name>
+            </file>
+        </group>
+        <group>
             <name>uart</name>
             <file>
                 <name>$PROJ_DIR$\..\Libraries\MCXN947\components\uart\fsl_adapter_lpuart.c</name>
@@ -2282,6 +2300,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Libraries\MCXN947\MCXN947\drivers\fsl_reset.c</name>
+        </file>
+    </group>
+    <group>
+        <name>linkfile</name>
+        <file>
+            <name>$PROJ_DIR$\board\linkfile\MCXN947_cm33_core1_ram.icf</name>
         </file>
     </group>
     <group>
