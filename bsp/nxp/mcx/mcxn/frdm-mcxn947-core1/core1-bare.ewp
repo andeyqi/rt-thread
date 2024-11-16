@@ -360,6 +360,7 @@
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\middleware\multicore\mcmgr</state>
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\components\uart</state>
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\MCXN947\utilities\str</state>
+                    <state>$PROJ_DIR$\..\Libraries\MCXN947\components\common</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

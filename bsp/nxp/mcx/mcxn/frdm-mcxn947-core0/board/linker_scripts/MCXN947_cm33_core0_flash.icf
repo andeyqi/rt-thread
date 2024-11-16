@@ -122,6 +122,7 @@ if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
 do not initialize  { section .noinit, section m_usb_bdt, section m_usb_global };
 if (isdefinedsymbol(__use_shmem__)) {
   do not initialize  { section rpmsg_sh_mem_section };
+  do not initialize  { section vuart0_sh_mem_section };  
 }
 
 keep{section .flexspi_fcb };
@@ -136,6 +137,7 @@ place in DATA_region                          { block NCACHE_VAR };
 place in DATA_region                          { block QACCESS_CODE };
 place in DATA_region                          { block QACCESS_DATA };
 if (isdefinedsymbol(__use_shmem__)) {
+  place at start of rpmsg_sh_mem_region       { section vuart0_sh_mem_section };
   place in rpmsg_sh_mem_region                { section rpmsg_sh_mem_section };
 }
 place in core1_region                       { block CORE1_IMAGE_WBLOCK };

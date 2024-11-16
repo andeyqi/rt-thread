@@ -17,6 +17,7 @@
 #include "drv_pin.h"
 #include "board.h"
 #include "fsl_mailbox.h"
+#include "virtual_uart.h"
 
 
 #define LEDB_PIN        ((1*32)+2)
@@ -28,6 +29,28 @@
 #ifndef BOARD_LED_RED_GPIO_PIN
 #define BOARD_LED_RED_GPIO_PIN 10U
 #endif
+
+
+static struct virual_uart virual_uart0 @ "vuart0_sh_mem_section";
+
+
+static void virual_uart_init(struct virual_uart * p_vuart)
+{
+    /* init memory buffer */
+    memset((void *)p_vuart->rx_buff,0,sizeof(p_vuart->rx_buff));
+    memset((void *)p_vuart->tx_buff,0,sizeof(p_vuart->tx_buff));
+    
+    /* init ringbuffer */
+    RingBuffer_Init(&p_vuart->rx,p_vuart->rx_buff,sizeof(p_vuart->rx_buff));
+    RingBuffer_Init(&p_vuart->tx,p_vuart->tx_buff,sizeof(p_vuart->tx_buff));
+    
+    /* init magic value */
+    p_vuart->magic[0]  = 'V';
+    p_vuart->magic[1]  = 'U';
+    p_vuart->magic[2]  = 'R';
+    p_vuart->magic[3]  = 'T';    
+    
+}
 
 static void sw_pin_cb(void *args);
 
@@ -86,6 +109,8 @@ int main(void)
     
     MAILBOX_Init(MAILBOX);
     NVIC_EnableIRQ(MAILBOX_IRQn);
+    
+    virual_uart_init(&virual_uart0);
     
     rt_kprintf("send to core1 start test.\n");
     MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,1); 

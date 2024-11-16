@@ -12,6 +12,7 @@
 #include "fsl_common.h"
 #include "fsl_gpio.h"
 #include "fsl_mailbox.h"
+#include "virtual_uart.h"
 
 
 /*******************************************************************************
