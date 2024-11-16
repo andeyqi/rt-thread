@@ -30,7 +30,7 @@
 #define BOARD_LED_RED_GPIO_PIN 10U
 #endif
 
-
+#ifdef APP_USING_VIRTUAL_UART 
 static struct virual_uart virual_uart0 @ "vuart0_sh_mem_section";
 
 
@@ -52,15 +52,15 @@ static void virual_uart_init(struct virual_uart * p_vuart)
     
 }
 
+#endif
 static void sw_pin_cb(void *args);
-
 
 void MAILBOX_IRQHandler()
 {
     rt_kprintf("recive from core1 ack mailbox value %d.\n",MAILBOX_GetValue(MAILBOX,kMAILBOX_CM33_Core0));
     MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core0,0xffffffff);
 }
-
+#ifdef APP_USING_MUTEX_TEST 
 static int32_t counter @ 0x2004C000 = 0;
 
 
@@ -84,8 +84,7 @@ unsigned int mutex_test(void)
     rt_kprintf("addr %p counter = %d.\r\n",&counter,counter);
     return 1;
 }
-
-
+#endif
 
 int main(void)
 {
@@ -109,12 +108,16 @@ int main(void)
     
     MAILBOX_Init(MAILBOX);
     NVIC_EnableIRQ(MAILBOX_IRQn);
-    
+
+#ifdef APP_USING_VIRTUAL_UART    
     virual_uart_init(&virual_uart0);
+#endif
     
+#ifdef APP_USING_MUTEX_TEST  
     rt_kprintf("send to core1 start test.\n");
     MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,1); 
     mutex_test();
+#endif    
 
 #ifdef RT_USING_SDIO
     rt_thread_mdelay(2000);

@@ -363,4 +363,9 @@
 /* end of Board extended module Drivers */
 /* end of Hardware Drivers Config */
 
+/* Applications Config */
+
+#define APP_USING_VIRTUAL_UART
+/* end of Applications Config */
+
 #endif

@@ -1,0 +1,11 @@
+menu "Applications Config"
+
+    config APP_USING_MUTEX_TEST
+        bool "Enable MUTEX TEST"
+        default n
+
+    config APP_USING_VIRTUAL_UART
+        bool "Enable virual uart"
+        default y
+
+endmenu
