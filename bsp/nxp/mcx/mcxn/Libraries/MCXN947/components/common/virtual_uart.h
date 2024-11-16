@@ -4,17 +4,17 @@
 #include <stdint.h>
 #include "ringbuffer.h"
 
-#define VUART_TX_BUFFER_SIZE   256
-#define VUART_RX_BUFFER_SIZE   128
+#define VUART_CORE0_RX_CORE1_TX_BUFFER_SIZE   256
+#define VUART_CORE0_TX_CORE1_RX_BUFFER_SIZE   128
 
 //#pragma pack(1)
 struct virual_uart
 {
     char magic[4];/* VURT */
-    RingBuffer rx;
-    RingBuffer tx;
-    uint8_t rx_buff[VUART_RX_BUFFER_SIZE];
-    uint8_t tx_buff[VUART_TX_BUFFER_SIZE]; 
+    RingBuffer core0_rx_core1_tx;
+    RingBuffer core0_tx_core1_rx;
+    uint8_t core0_rx_core1_tx_buff[VUART_CORE0_RX_CORE1_TX_BUFFER_SIZE];
+    uint8_t core0_tx_core1_rx_buff[VUART_CORE0_TX_CORE1_RX_BUFFER_SIZE]; 
 };
 //#pragma pack()
 

@@ -37,12 +37,12 @@ static struct virual_uart virual_uart0 @ "vuart0_sh_mem_section";
 static void virual_uart_init(struct virual_uart * p_vuart)
 {
     /* init memory buffer */
-    memset((void *)p_vuart->rx_buff,0,sizeof(p_vuart->rx_buff));
-    memset((void *)p_vuart->tx_buff,0,sizeof(p_vuart->tx_buff));
+    memset((void *)p_vuart->core0_rx_core1_tx_buff,0,sizeof(p_vuart->core0_rx_core1_tx_buff));
+    memset((void *)p_vuart->core0_tx_core1_rx_buff,0,sizeof(p_vuart->core0_tx_core1_rx_buff));
     
     /* init ringbuffer */
-    RingBuffer_Init(&p_vuart->rx,p_vuart->rx_buff,sizeof(p_vuart->rx_buff));
-    RingBuffer_Init(&p_vuart->tx,p_vuart->tx_buff,sizeof(p_vuart->tx_buff));
+    RingBuffer_Init(&p_vuart->core0_rx_core1_tx,p_vuart->core0_rx_core1_tx_buff,sizeof(p_vuart->core0_rx_core1_tx_buff));
+    RingBuffer_Init(&p_vuart->core0_tx_core1_rx,p_vuart->core0_tx_core1_rx_buff,sizeof(p_vuart->core0_tx_core1_rx_buff));
     
     /* init magic value */
     p_vuart->magic[0]  = 'V';
@@ -111,6 +111,8 @@ int main(void)
 
 #ifdef APP_USING_VIRTUAL_UART    
     virual_uart_init(&virual_uart0);
+    rt_kprintf("send to core1 virual uart addr %x.\n",(uint32_t)(&virual_uart0));
+    MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core1,(uint32_t)(&virual_uart0)); 
 #endif
     
 #ifdef APP_USING_MUTEX_TEST  
@@ -133,10 +135,22 @@ int main(void)
 
     while (1)
     {
+        uint8_t data;
         //rt_pin_write(LEDB_PIN, PIN_HIGH);    /* Set GPIO output 1 */
-        rt_thread_mdelay(500);               /* Delay 500mS */
+        //rt_thread_mdelay(500);               /* Delay 500mS */
         //rt_pin_write(LEDB_PIN, PIN_LOW);     /* Set GPIO output 0 */
         //rt_thread_mdelay(500);               /* Delay 500mS */
+        while(MAILBOX_GetMutex(MAILBOX) == 0);
+        
+        while(RingBuffer_GetDataLength(&virual_uart0.core0_rx_core1_tx))
+        {
+            RingBuffer_Read(&virual_uart0.core0_rx_core1_tx,&data,1);
+            rt_kprintf("%c",data);
+        }
+      
+        MAILBOX_SetMutex(MAILBOX);
+        
+        rt_thread_mdelay(10);
     }
 }
 

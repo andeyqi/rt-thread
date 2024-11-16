@@ -13,7 +13,7 @@
 #include "fsl_gpio.h"
 #include "fsl_mailbox.h"
 #include "virtual_uart.h"
-
+#include <stdio.h>
 
 /*******************************************************************************
  * Definitions
@@ -36,16 +36,21 @@ void SystemInitHook(void)
     //(void)MCMGR_EarlyInit();
 }
 
-uint8_t flag = 0;
+
+struct virual_uart * p_virtual_uart0 = NULL;
 
 void MAILBOX_IRQHandler()
 {
-    LED_TOGGLE();
+    if(NULL == p_virtual_uart0)
+    {
+          p_virtual_uart0 = (struct virual_uart *)MAILBOX_GetValue(MAILBOX,kMAILBOX_CM33_Core1);
+    }
+
     MAILBOX_ClearValueBits(MAILBOX,kMAILBOX_CM33_Core1,0xffffffff);
     MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core0,100);
-    flag = 1;
 }
 
+#if 0
 static int32_t counter @ 0x2004C000 = 0;
 
 unsigned int mutex_test(void)
@@ -65,7 +70,20 @@ unsigned int mutex_test(void)
 
     return 1;
 }
+#endif
 
+size_t __write(int handle, const unsigned char *buffer, size_t size)
+{
+
+     while(MAILBOX_GetMutex(MAILBOX) == 0);
+      
+
+     RingBuffer_Write(&p_virtual_uart0->core0_rx_core1_tx,(uint8_t *)buffer,size);       
+
+     MAILBOX_SetMutex(MAILBOX);
+     
+     return size;
+}
 
 /*!
  * @brief Main function
@@ -98,6 +116,16 @@ int main(void)
     //{
     //    SDK_DelayAtLeastUs(1000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     //}
+    
+    while(p_virtual_uart0 == NULL);
+    
+    if(p_virtual_uart0->magic[0] == 'V' && 
+       p_virtual_uart0->magic[1] == 'U' && 
+       p_virtual_uart0->magic[2] == 'R' && 
+       p_virtual_uart0->magic[3] == 'T')
+    {
+        printf("\r\n [core1] virtual uart init ok.\r\n");
+    }
 
     /* Configure LED */
     LED_INIT();
@@ -105,13 +133,9 @@ int main(void)
 
     for (;;)
     {
-        //SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        //LED_TOGGLE();
-        if(flag)
-        {
-            mutex_test();
-            flag = 0;
-        }
+        SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        LED_TOGGLE();
+        printf("\r\n [core1] led toggle.\r\n");
     }
 
 }
