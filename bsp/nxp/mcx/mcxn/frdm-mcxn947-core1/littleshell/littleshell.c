@@ -4,6 +4,8 @@
 #include "littleshell.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "FreeRTOS.h"
+#include "task.h"
 
 #define CONSOLE_FROME "Core1# "
 #define NEW_LINE      "\r\n"
@@ -505,7 +507,7 @@ void littleshell_main_entry(void *pvParameters)
         }
         else
         {
-            //tx_thread_sleep(10);
+            vTaskDelay(10);
         }
     }   
 }

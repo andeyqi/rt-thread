@@ -15,6 +15,8 @@
 #include "virtual_uart.h"
 #include <stdio.h>
 #include "littleshell.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 /*******************************************************************************
  * Definitions
@@ -74,6 +76,12 @@ uint8_t uartgetchar(uint8_t* pdata)
      
      return ret;
 }
+ 
+          
+#define SHELL_TASK_PRIO        2  
+#define SHELL_STK_SIZE         256  
+        TaskHandle_t ShellTask_Handler;  
+
 /*!
  * @brief Main function
  */
@@ -99,16 +107,15 @@ int main(void)
     /* Configure LED */
     LED_INIT();
     
-    littleshell_main_entry(NULL);
-#if 0
-    for (;;)
-    {
-        SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        LED_TOGGLE();
-        printf("\r\n [core1] led toggle.\r\n");
-    }
-#endif    
-
+    xTaskCreate((TaskFunction_t )littleshell_main_entry,  
+                (const char*    )"shell",  
+                (uint16_t       )SHELL_STK_SIZE,  
+                (void*          )NULL,  
+                (UBaseType_t    )SHELL_TASK_PRIO,  
+                (TaskHandle_t*  )&ShellTask_Handler); 
+    
+    vTaskStartScheduler();  
+    
 }
 
 unsigned int hello(char argc,char ** argv)
