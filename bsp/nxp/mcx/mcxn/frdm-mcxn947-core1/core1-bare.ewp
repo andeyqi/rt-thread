@@ -361,6 +361,7 @@
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\components\uart</state>
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\MCXN947\utilities\str</state>
                     <state>$PROJ_DIR$\..\Libraries\MCXN947\components\common</state>
+                    <state>$PROJ_DIR$\littleshell</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2334,6 +2335,15 @@
             <excluded>
                 <configuration>Debug</configuration>
             </excluded>
+        </file>
+    </group>
+    <group>
+        <name>shell</name>
+        <file>
+            <name>$PROJ_DIR$\littleshell\littleshell.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\littleshell\littleshell.h</name>
         </file>
     </group>
     <group>

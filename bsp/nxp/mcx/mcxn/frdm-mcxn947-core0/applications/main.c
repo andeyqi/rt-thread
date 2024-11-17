@@ -248,4 +248,28 @@ static int kick_core1(void)
 
 INIT_ENV_EXPORT(kick_core1);
 
+
+static int core1(int argc, char *argv[])
+{
+    uint8_t buff[80] = {0};
+    uint8_t len = 0;
+    
+    if(argc > 1)
+    {
+        for(int i = 1;i < argc ;i++)
+        {
+            len += rt_sprintf((char *)buff,"%s ",argv[i]);
+        }
+        len += rt_sprintf((char *)&buff[len],"%s","\n");
+        
+        while(MAILBOX_GetMutex(MAILBOX) == 0);
+        
+        RingBuffer_Write(&virual_uart0.core0_tx_core1_rx,buff,len);
+      
+        MAILBOX_SetMutex(MAILBOX);        
+        
+    }
+    return 0;
+}
+MSH_CMD_EXPORT(core1, send virual uart to core1);
 // end file

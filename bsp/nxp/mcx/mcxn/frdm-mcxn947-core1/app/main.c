@@ -14,6 +14,7 @@
 #include "fsl_mailbox.h"
 #include "virtual_uart.h"
 #include <stdio.h>
+#include "littleshell.h"
 
 /*******************************************************************************
  * Definitions
@@ -33,7 +34,6 @@ void SystemInitHook(void)
        function as close to the reset entry as possible to allow CoreUp event
        triggering. The SystemInitHook() weak function overloading is used in this
        application. */
-    //(void)MCMGR_EarlyInit();
 }
 
 
@@ -50,34 +50,11 @@ void MAILBOX_IRQHandler()
     MAILBOX_SetValue(MAILBOX,kMAILBOX_CM33_Core0,100);
 }
 
-#if 0
-static int32_t counter @ 0x2004C000 = 0;
-
-unsigned int mutex_test(void)
-{
-    int i =0x7ffffff;
-    
-    for(;i != 0;i--)
-    {
-      while(MAILBOX_GetMutex(MAILBOX) == 0)
-        ;
-      
-      counter--;
-      
-      MAILBOX_SetMutex(MAILBOX);
-      
-    }
-
-    return 1;
-}
-#endif
-
 size_t __write(int handle, const unsigned char *buffer, size_t size)
 {
 
      while(MAILBOX_GetMutex(MAILBOX) == 0);
       
-
      RingBuffer_Write(&p_virtual_uart0->core0_rx_core1_tx,(uint8_t *)buffer,size);       
 
      MAILBOX_SetMutex(MAILBOX);
@@ -85,37 +62,29 @@ size_t __write(int handle, const unsigned char *buffer, size_t size)
      return size;
 }
 
+
+uint8_t uartgetchar(uint8_t* pdata)
+{
+     uint8_t ret  = 0;
+     while(MAILBOX_GetMutex(MAILBOX) == 0);
+      
+     ret = RingBuffer_Read(&p_virtual_uart0->core0_tx_core1_rx,pdata,1);       
+
+     MAILBOX_SetMutex(MAILBOX);  
+     
+     return ret;
+}
 /*!
  * @brief Main function
  */
 int main(void)
 {
-    //uint32_t startupData, i;
-    //mcmgr_status_t status;
-
-    /* Init board hardware.*/
     /* enable clock for GPIO */
     CLOCK_EnableClock(kCLOCK_Gpio0);
     BOARD_InitBootPins();
     
     MAILBOX_Init(MAILBOX);
     NVIC_EnableIRQ(MAILBOX_IRQn);
-
-    /* Initialize MCMGR, install generic event handlers */
-    //(void)MCMGR_Init();
-
-    /* Get the startup data */
-    //do
-    //{
-    //    status = MCMGR_GetStartupData(&startupData);
-    //} while (status != kStatus_MCMGR_Success);
-
-    /* Make a noticable delay after the reset */
-    /* Use startup parameter from the master core... */
-    //for (i = 0; i < startupData; i++)
-    //{
-    //    SDK_DelayAtLeastUs(1000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    //}
     
     while(p_virtual_uart0 == NULL);
     
@@ -130,12 +99,22 @@ int main(void)
     /* Configure LED */
     LED_INIT();
     
-
+    littleshell_main_entry(NULL);
+#if 0
     for (;;)
     {
         SDK_DelayAtLeastUs(500000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
         LED_TOGGLE();
         printf("\r\n [core1] led toggle.\r\n");
     }
+#endif    
 
 }
+
+unsigned int hello(char argc,char ** argv)
+{
+    printf("hello i am core1 \r\n");
+    return 0;
+}
+
+LTSH_FUNCTION_EXPORT(hello, "core1 hello");
