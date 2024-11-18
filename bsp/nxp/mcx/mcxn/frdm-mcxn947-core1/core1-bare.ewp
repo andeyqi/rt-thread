@@ -789,7 +789,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$\board\linkfile\MCXN947_cm33_core1_ram.icf</state>
+                    <state>$PROJ_DIR$\board\linkfile\MCXN947_cm33_core1_flash.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>

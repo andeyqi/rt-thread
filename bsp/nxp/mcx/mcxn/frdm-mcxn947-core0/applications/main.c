@@ -164,7 +164,7 @@ static void sw_pin_cb(void *args)
 #include <rtthread.h>
 #include "fsl_common.h"
 
-#define CORE1_IMAGE_COPY_TO_RAM
+//#define CORE1_IMAGE_COPY_TO_RAM
 
 /*******************************************************************************
  * Definitions
@@ -172,8 +172,7 @@ static void sw_pin_cb(void *args)
 #define PRIMARY_CORE_MAILBOX_CPU_ID   kMAILBOX_CM33_Core0
 #define SECONDARY_CORE_MAILBOX_CPU_ID kMAILBOX_CM33_Core1
 
-/* Address of RAM, where the image for core1 should be copied */
-#define CORE1_BOOT_ADDRESS 0x2004E000
+#define CORE1_BOOT_ADDRESS 0x000C0000
 
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 extern uint32_t Image$$CORE1_REGION$$Base;
