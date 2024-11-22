@@ -2258,6 +2258,12 @@
         <group>
             <name>common</name>
             <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\debug.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\hexdump.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Libraries\MCXN947\components\common\mini_printf.c</name>
             </file>
             <file>
