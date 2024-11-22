@@ -55,8 +55,10 @@ void MAILBOX_IRQHandler()
 size_t __write(int handle, const unsigned char *buffer, size_t size)
 {
 
+     while(RingBuffer_GetFreeSpace(&p_virtual_uart0->core0_rx_core1_tx) < size);
+
      while(MAILBOX_GetMutex(MAILBOX) == 0);
-      
+
      RingBuffer_Write(&p_virtual_uart0->core0_rx_core1_tx,(uint8_t *)buffer,size);       
 
      MAILBOX_SetMutex(MAILBOX);
@@ -69,11 +71,11 @@ uint8_t uartgetchar(uint8_t* pdata)
 {
      uint8_t ret  = 0;
      while(MAILBOX_GetMutex(MAILBOX) == 0);
-      
+
      ret = RingBuffer_Read(&p_virtual_uart0->core0_tx_core1_rx,pdata,1);       
 
      MAILBOX_SetMutex(MAILBOX);  
-     
+
      return ret;
 }
  
