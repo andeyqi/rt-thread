@@ -1110,7 +1110,15 @@
         <settings>
             <name>BUILDACTION</name>
             <archiveVersion>2</archiveVersion>
-            <data />
+            <data>
+                <buildActions>
+                    <buildAction>
+                        <cmdline>ielfdumparm.exe core1-bare.out  --all  --source &gt; core1-bare.out.asm</cmdline>
+                        <workingDirectory>$PROJ_DIR$\Debug\Exe</workingDirectory>
+                        <buildSequence>postLink</buildSequence>
+                    </buildAction>
+                </buildActions>
+            </data>
         </settings>
     </configuration>
     <configuration>
