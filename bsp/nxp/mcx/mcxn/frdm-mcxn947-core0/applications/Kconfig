@@ -8,4 +8,8 @@ menu "Applications Config"
         bool "Enable virual uart"
         default y
 
+    config APP_USING_HEXDUMP_CMD
+        bool "Enable hexdump cmd"
+        default y
+
 endmenu

@@ -366,6 +366,7 @@
 /* Applications Config */
 
 #define APP_USING_VIRTUAL_UART
+#define APP_USING_HEXDUMP_CMD
 /* end of Applications Config */
 
 #endif

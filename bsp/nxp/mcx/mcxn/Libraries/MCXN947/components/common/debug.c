@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#if defined (HEXDUMP_OS_RT_THREAD)
+#include <rtthread.h>
+#define PRINTF rt_kprintf
+#else
+#define PRINTF printf
+#endif
+
 #define TRACE_DISPLAY_WIDTH          16
 
 #define __OUTPUT_STREAM(__TYPE, __ADDR,__OFF,__SIZE, __FORMAT_STR, __BLANK)     \
@@ -12,18 +19,18 @@
         __TYPE *pSrc = (__TYPE *)(__ADDR);                                      \
         uint8_t *pchSrc;                                                        \
                                                                                 \
-        printf("         ");                                                    \
+        PRINTF("         ");                                                    \
         for (n = 0; n < (TRACE_DISPLAY_WIDTH / sizeof(__TYPE)); n++) {          \
-            printf(__FORMAT_STR, (n*sizeof(__TYPE)));                           \
+            PRINTF(__FORMAT_STR, (n*sizeof(__TYPE)));                           \
         }                                                                       \
-        printf("\r\n");                                                         \
+        PRINTF("\r\n");                                                         \
         while(__Size >= (TRACE_DISPLAY_WIDTH / sizeof(__TYPE))) {               \
-            printf("%08x:",TRACE_DISPLAY_WIDTH*(line++) + (uint8_t *)__ADDR);   \
+            PRINTF("%08x:",TRACE_DISPLAY_WIDTH*(line++) + (uint8_t *)__ADDR);   \
             for (n = 0; n < (TRACE_DISPLAY_WIDTH / sizeof(__TYPE)); n++) {      \
-                printf(__FORMAT_STR, pSrc[n]);                                  \
+                PRINTF(__FORMAT_STR, pSrc[n]);                                  \
             }                                                                   \
                                                                                 \
-            printf("\t");                                                       \
+            PRINTF("\t");                                                       \
             pchSrc = (uint8_t *)pSrc;                                           \
                                                                                 \
             for (n = 0; n < TRACE_DISPLAY_WIDTH; n++) {                         \
@@ -31,36 +38,36 @@
                 if (c >= 127 || c < 32) {                                       \
                     c = '.';                                                    \
                 }                                                               \
-                printf("%c", c);                                                \
+                PRINTF("%c", c);                                                \
             }                                                                   \
                                                                                 \
-            printf("\r\n");                                                     \
+            PRINTF("\r\n");                                                     \
                                                                                 \
             pSrc += (TRACE_DISPLAY_WIDTH / sizeof(__TYPE));                     \
             __Size -= (TRACE_DISPLAY_WIDTH / sizeof(__TYPE));                   \
         }                                                                       \
                                                                                 \
         if (__Size > 0) {                                                       \
-            printf("%08x:",TRACE_DISPLAY_WIDTH*(line) + (uint8_t *)__ADDR);     \
+            PRINTF("%08x:",TRACE_DISPLAY_WIDTH*(line) + (uint8_t *)__ADDR);     \
             for (n = 0; n < __Size; n++) {                                      \
-                printf(__FORMAT_STR, pSrc[n]);                                  \
+                PRINTF(__FORMAT_STR, pSrc[n]);                                  \
             }                                                                   \
             for (   n = 0;                                                      \
                     n < (TRACE_DISPLAY_WIDTH/sizeof(__TYPE) - __Size);          \
                     n++) {                                                      \
-                printf(__BLANK);                                                \
+                PRINTF(__BLANK);                                                \
             }                                                                   \
-            printf("\t");                                                       \
+            PRINTF("\t");                                                       \
             pchSrc = (uint8_t *)pSrc;                                           \
             for (n = 0; n < __Size * sizeof(__TYPE); n++) {                     \
                 char c = pchSrc[n];                                             \
                 if (c > 127 || c < 32) {                                        \
                     c = '.';                                                    \
                 }                                                               \
-                printf("%c", c);                                                \
+                PRINTF("%c", c);                                                \
             }                                                                   \
                                                                                 \
-            printf("\r\n");                                                     \
+            PRINTF("\r\n");                                                     \
         }                                                                       \
     } while(0)
 

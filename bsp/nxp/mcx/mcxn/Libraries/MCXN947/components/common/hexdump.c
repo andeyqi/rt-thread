@@ -1,7 +1,11 @@
-#include "littleshell.h"
 #include "utilities.h"
 #include "debug.h"
 
+#if defined (HEXDUMP_OS_RT_THREAD)
+#include <rtthread.h>
+#else
+#include "littleshell.h"
+#endif
 
 unsigned int hexdump1(char argc,char ** argv)
 {
@@ -39,7 +43,11 @@ unsigned int hexdump1(char argc,char ** argv)
 
     return 0;
 }
+#if defined (HEXDUMP_OS_RT_THREAD)
+MSH_CMD_EXPORT(hexdump1,"dump data with start addr and len");
+#else
 LTSH_FUNCTION_EXPORT(hexdump1,"dump data with start addr and len");
+#endif
 
 
 unsigned int hexdump2(char argc,char ** argv)
@@ -80,7 +88,11 @@ unsigned int hexdump2(char argc,char ** argv)
     return 0;
 
 }
+#if defined (HEXDUMP_OS_RT_THREAD)
+MSH_CMD_EXPORT(hexdump2,"dump data with start addr and end addr");
+#else
 LTSH_FUNCTION_EXPORT(hexdump2,"dump data with start addr and end addr");
+#endif
 
 unsigned int hexwrite(char argc,char ** argv)
 {
@@ -103,5 +115,9 @@ unsigned int hexwrite(char argc,char ** argv)
 
     return 0;
 }
-LTSH_FUNCTION_EXPORT(hexwrite,"write value to address");
 
+#if defined (HEXDUMP_OS_RT_THREAD)
+MSH_CMD_EXPORT(hexwrite,"write value to address");
+#else
+LTSH_FUNCTION_EXPORT(hexwrite,"write value to address");
+#endif

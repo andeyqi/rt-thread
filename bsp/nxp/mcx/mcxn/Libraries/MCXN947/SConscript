@@ -6,6 +6,7 @@ path = [cwd + '/../CMSIS/Core/Include', cwd + '/MCXN947', cwd + '/MCXN947/driver
 src = Split('''
             MCXN947/system_MCXN947_cm33_core0.c
             ''')
+define = [' ']
 
 if rtconfig.PLATFORM in ['gcc']:
     src += ['MCXN947/gcc/startup_MCXN947_cm33_core0.S']
@@ -113,12 +114,18 @@ if GetDepend(['BSP_USING_MCMGR']):
     src += ['middleware/multicore/mcmgr/mcmgr_internal_core_api_mcxnx4x.c']
     path += [cwd + '/middleware/multicore/mcmgr/mcmgr.c']
 
+if GetDepend(['APP_USING_HEXDUMP_CMD']):
+    src += ['components/common/hexdump.c']
+    src += ['components/common/debug.c']
+    src += ['components/common/utilities.c']
+    define += ['HEXDUMP_OS_RT_THREAD']
+
 path += [cwd + '/MCXN947/drivers/romapi/flash']
 path += [cwd + '/MCXN947/drivers/romapi/mem_interface']
 path += [cwd + '/MCXN947/drivers/romapi/nboot']
 path += [cwd + '/MCXN947/drivers/romapi/runbootloader']
 path += [cwd + '/components/common']
 
-group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path)
+group = DefineGroup('Libraries', src, depend = [''], CPPPATH = path, CPPDEFINES = define)
 
 Return('group')
