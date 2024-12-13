@@ -31,7 +31,7 @@
 #endif
 
 #ifdef APP_USING_VIRTUAL_UART 
-static struct virual_uart virual_uart0 @ "vuart0_sh_mem_section";
+static struct virual_uart virual_uart0 rt_section("vuart0_sh_mem_section");
 
 
 static void virual_uart_init(struct virual_uart * p_vuart)
