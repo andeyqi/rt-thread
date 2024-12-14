@@ -68,4 +68,51 @@ static void sw_pin_cb(void *args)
     rt_kprintf("sw pressed\r\n");
 }
 
+
+#if defined(__GNUC__)
+
+static __attribute__((noinline)) int my_memcpy(void * src,void *  dst,int len)
+{
+    unsigned int tmp = 0;
+    unsigned int end = (char *)src + len;
+
+    asm volatile (
+            "1: ldr %[tmp], [%[src]] , #4\n"
+            "str %[tmp], [%[dst]], #4\n"
+            "cmp %[src], %[end] \n"
+            "bcc 1b"
+            : [dst] "+r" (dst), [tmp] "+r" (tmp), [src] "+r" (src)
+            : [end] "r" (end)
+            : "memory");
+
+    return len;
+}
+
+
+static int cmd_mymemcpy_test(int argc, char **argv)
+{
+
+    int src[8] = {0x11111111,0x22222222,0x33333333,0x44444444,
+                  0x55555555,0x66666666,0x77777777,0x88888888};
+    int dst[8] = {};
+
+    rt_kprintf("my memcpy test ret = %d\r\n",my_memcpy(src,dst,sizeof(src)));
+
+    if(memcmp(src,dst,sizeof(src)) == 0)
+        rt_kprintf("my memcpy test ok.\r\n");
+
+    int src1[32] = {0x11111111,0x22222222,0x33333333,0x44444444,
+                  0x55555555,0x66666666,0x77777777,0x88888888};
+    int dst1[32] = {};
+
+    rt_kprintf("my memcpy test ret = %d\r\n",my_memcpy(src1,dst1,sizeof(src1)));
+
+    if(memcmp(src1,dst1,sizeof(src1)) == 0)
+        rt_kprintf("my memcpy test ok.\r\n");
+
+    return 0;
+}
+MSH_CMD_EXPORT_ALIAS(cmd_mymemcpy_test, mymemcpy, my memcpy test);
+#endif
+
 // end file
